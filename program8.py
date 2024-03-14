@@ -4,9 +4,6 @@ import math
 
 image = np.zeros((500, 500, 3), dtype=np.uint8)
 
-cube_size = 100
-cube_thickness = 2
-
 vertices = np.array(
     [
         [-1, -1, -1],
@@ -85,7 +82,7 @@ while True:
     rotated_vertices = np.dot(rotated_vertices, rotation_matrix_z)
 
     projected_vertices = (
-        rotated_vertices[:, :2] * cube_size + np.array([250, 250])
+        rotated_vertices[:, :2] * 100 + np.array([250, 250])
     ).astype(int)
 
     image = np.zeros((500, 500, 3), dtype=np.uint8)
@@ -96,7 +93,7 @@ while True:
     for edge in edges:
         pt1 = tuple(projected_vertices[edge[0]])
         pt2 = tuple(projected_vertices[edge[1]])
-        cv2.line(image, pt1, pt2, (255, 255, 255), cube_thickness)
+        cv2.line(image, pt1, pt2, (255, 255, 255), 2)
 
     cv2.imshow("Cube", image)
 
