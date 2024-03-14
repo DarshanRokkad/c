@@ -47,4 +47,5 @@ while True:
         cube_size +=5
     elif key == ord('d'):
         cube_size -=5
+        
 cv2.destroyAllWindows()
