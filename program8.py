@@ -2,8 +2,7 @@ import cv2
 import numpy as np
 import math
 
-image_size = 500
-image = np.zeros((image_size, image_size, 3), dtype=np.uint8)
+image = np.zeros((500, 500, 3), dtype=np.uint8)
 
 cube_size = 100
 cube_thickness = 2
@@ -89,7 +88,7 @@ while True:
         rotated_vertices[:, :2] * cube_size + np.array([250, 250])
     ).astype(int)
 
-    image = np.zeros((image_size, image_size, 3), dtype=np.uint8)
+    image = np.zeros((500, 500, 3), dtype=np.uint8)
 
     for i, face in enumerate(faces):
         cv2.fillPoly(image, [projected_vertices[face, :]], color=colors[i])
