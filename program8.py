@@ -31,6 +31,24 @@ edges = [
     (3, 7),
 ]
 
+faces = [
+            (0, 1, 2, 3),
+            (4, 5, 6, 7),
+            (0, 1, 5, 4),
+            (2, 3, 7, 6),
+            (1, 2, 6, 5),
+            (0, 3, 7, 4),
+        ]
+
+colors = [
+    (0, 0, 255),
+    (0, 255, 0),
+    (255, 0, 0),
+    (255, 255, 0),
+    (255, 0, 255),
+    (0, 255, 255),
+]
+
 angle_x, angle_y, angle_z = 0, 0, 0
 while True:
     rotation_matrix_x = np.array(
@@ -66,6 +84,9 @@ while True:
     ).astype(int)
 
     image = np.zeros((500, 500, 3))
+
+    for i, face in enumerate(faces):
+        cv2.fillPoly(image, [projected_vertices[face, :]], color=colors[i])
 
     for edge in edges:
         pt1 = tuple(projected_vertices[edge[0]])
