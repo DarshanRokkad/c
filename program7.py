@@ -20,14 +20,14 @@ while True:
     
     key = cv2.waitKey(0)
     
-    if key == ord("r"):
+    if key == ord("q"):
+        break
+    elif key == ord("r"):
         triangleColor = (0, 0, 255)
     elif key == ord("g"):
         triangleColor = (0, 255, 0)
     elif key == ord("b"):
         triangleColor = (255, 0, 0)
         
-    if key == ord("q"):
-        break
 
 cv2.destroyAllWindows()
