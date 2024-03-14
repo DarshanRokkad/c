@@ -1,66 +1,31 @@
 import cv2
 import numpy as np
-import math
 
-def rotate2d():
-    img = np.zeros((200, 200))
-    cv2.rectangle(img, (50, 50), (150,150), 255, -1)
-    
-    angle = 0
-    
-    while True:
-        img = cv2.warpAffine(img, cv2.getRotationMatrix2D((100, 100), angle, 1), (200, 200))
-        
-        angle += 1
-        
-        cv2.imshow('image', img)
-        key = cv2.waitKey(30)
-        if key == ord('q'):
-            break
-        
-    cv2.destroyAllWindows()
+image = np.zeros((500, 500, 3), dtype=np.uint8)
 
-def rotate3d():
-    vertics = np.array(
-        [
-            [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
-            [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
-        ]
-    )
-    edges = [
-        (0, 1), (1, 2), (2, 3), (3, 0),
-        (4, 5), (5, 6), (6, 7), (7, 4),
-        (0, 4), (1, 5), (2, 6), (3, 7)
-    ]
-    angle = 0
+triangle_vertices = np.array([[250, 50], [50, 450], [450, 450]], dtype=np.int32)
 
-    while True:
-        
-        rotated_matrix = np.array(
-            [
-                [math.cos(angle), -math.sin(angle), 0],
-                [math.sin(angle), math.cos(angle), 0],
-                [0, 1, 1]
-            ], dtype = np.float32
-        )
-        rotated_vertics = np.dot(vertics, rotated_matrix)
-        projected_vertics = (rotated_vertics[:, :2] * 75 + np.array([300, 300])).astype(int)
-        
-        img = np.zeros((600, 600, 3))
-        for edge in edges:
-            pt1 = tuple(projected_vertics[edge[0]])
-            pt2 = tuple(projected_vertics[edge[1]])
-            cv2.line(img, pt1, pt2, (255, 255, 255), 2)
-        
-        angle+=0.03
-        
-        cv2.imshow('image', img)
-        key = cv2.waitKey(30)
-        if key == ord('q'):
-            break
+cv2.polylines(image, [triangle_vertices], isClosed=True, color=(0, 0, 255), thickness=2)
 
-    cv2.destroyAllWindows()
-    
-    
-rotate2d()
-rotate3d()
+centroid = np.mean(triangle_vertices, axis=0, dtype=np.int32)
+
+cv2.circle(image, tuple(centroid), radius=2, color=(0, 255, 0), thickness=-1)
+
+cv2.imshow("Triangle", image)
+
+def change_color(event,a,b,c,d):
+    global image
+    if event==cv2.EVENT_LBUTTONDOWN:
+        color_n=np.random.randint(0,266,size=3).tolist()
+        cv2.fillPoly(image,[triangle_vertices],color=color_n)
+        cv2.circle(image, tuple(centroid), radius=2, color=(0, 255, 0), thickness=-1)
+        cv2.imshow("Triangle", image)
+cv2.setMouseCallback("Triangle",change_color)
+
+while True:
+    key=cv2.waitKey(10) & 0xFF
+    if key==ord('q'):
+        break
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
